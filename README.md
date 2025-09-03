@@ -1,6 +1,6 @@
 # Knowledge Library
 
-A personal, secure knowledge management system for storing AI coding insights, tutorials, and resources. Features dark mode UI, hierarchical categories, and support for links and YouTube videos.
+A very personal, secure knowledge management system for storing AI coding insights, tutorials, and resources. Features dark mode UI, hierarchical categories, and support for links and YouTube videos.
 
 ## Features
 
