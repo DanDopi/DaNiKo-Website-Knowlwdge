@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  entries   Entry[]
+}
+
+model Category {
+  id        String     @id @default(cuid())
+  name      String
+  parentId  String?
+  parent    Category?  @relation("CategoryChildren", fields: [parentId], references: [id])
+  children  Category[] @relation("CategoryChildren")
+  entries   Entry[]    @relation("EntryCategories")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@unique([name, parentId])
+}
+
+model Entry {
+  id          String     @id @default(cuid())
+  title       String
+  content     String
+  links       Link[]
+  videos      Video[]
+  categories  Category[] @relation("EntryCategories")
+  userId      String
+  user        User       @relation(fields: [userId], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Link {
+  id      String @id @default(cuid())
+  title   String
+  url     String
+  entryId String
+  entry   Entry  @relation(fields: [entryId], references: [id], onDelete: Cascade)
+}
+
+model Video {
+  id        String @id @default(cuid())
+  title     String
+  youtubeId String
+  entryId   String
+  entry     Entry  @relation(fields: [entryId], references: [id], onDelete: Cascade)
+}
